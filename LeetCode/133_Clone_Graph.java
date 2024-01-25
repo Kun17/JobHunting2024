@@ -19,19 +19,17 @@ class Node {
 */
 
 class Solution {
-    private void dfs(Node oNode, Map<Integer, Node> newNodes, Set<Node> visited) {
+    private void dfs(Node oNode, Map<Integer, Node> newNodes) {
         Node nNode = newNodes.get(oNode.val);
         for (Node oNei : oNode.neighbors) {
             if (newNodes.containsKey(oNei.val)) {
                 nNode.neighbors.add(newNodes.get(oNei.val));
-            } else {
-                Node nNei = new Node(oNei.val);
-                newNodes.put(nNei.val, nNei);
-                nNode.neighbors.add(nNei);
+                continue;
             }
-            if (visited.contains(oNei)) continue;
-            visited.add(oNei);
-            dfs(oNei, newNodes, visited);
+            Node nNei = new Node(oNei.val);
+            newNodes.put(nNei.val, nNei);
+            nNode.neighbors.add(nNei);
+            dfs(oNei, newNodes);
         }
     }
     
@@ -40,9 +38,7 @@ class Solution {
         Node ans = new Node(1);
         Map<Integer, Node> newNodes = new HashMap<>();
         newNodes.put(1, ans);
-        Set<Node> visited = new HashSet<>();
-        visited.add(node);
-        dfs(node, newNodes, visited);
+        dfs(node, newNodes);
         return newNodes.get(1);
     }
 }
